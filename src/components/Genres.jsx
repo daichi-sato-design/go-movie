@@ -1,25 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { useRouteMatch, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-const Movies = () => {
-  const [movies, setMovies] = useState([]);
+const Genres = () => {
+  const [genres, setGenres] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(null);
-  const { path } = useRouteMatch();
 
   useEffect(() => {
-    fetch("http://localhost:4000/v1/movies")
-      .then((response) => {
-        if (response.status !== 200) {
+    fetch(`http://localhost:4000/v1/genres`)
+      .then((res) => {
+        if (res.status !== 200) {
           let err = Error;
-          err.message = "Invalid response code: " + response.status;
+          err.message = "Invalid response code: " + res.status;
           setError(err.message);
           throw err;
         }
-        return response.json();
+        return res.json();
       })
       .then((json) => {
-        setMovies(json.movies);
+        setGenres(json.genres);
         setIsLoaded(true);
       })
       .catch((_) => {
@@ -34,11 +33,12 @@ const Movies = () => {
   } else {
     return (
       <>
-        <h2>映画を探す</h2>
+        <h2>カテゴリー</h2>
+
         <ul className="mt-3">
-          {movies.map((m) => (
+          {genres.map((m) => (
             <li key={m.id}>
-              <Link to={`${path}/${m.id}`}>{m.title}</Link>
+              <Link to={`/genre/${m.id}`}>{m.genre_name}</Link>
             </li>
           ))}
         </ul>
@@ -47,4 +47,4 @@ const Movies = () => {
   }
 };
 
-export default Movies;
+export default Genres;

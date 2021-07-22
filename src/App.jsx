@@ -4,8 +4,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Home from "./components/Home";
 import Movies from "./components/Movies";
 import OneMovie from "./components/OneMovie";
-import CategoryPage from "./components/Category";
-import Categories from "./components/Categories";
+import Genres from "./components/Genres";
 import Admin from "./components/Admin";
 
 const App = () => {
@@ -29,7 +28,7 @@ const App = () => {
                     <Link to="/movies">映画一覧</Link>
                   </li>
                   <li className="list-group-item">
-                    <Link to="/by-category">ガテゴリー</Link>
+                    <Link to="/genres">ガテゴリー</Link>
                   </li>
                   <li className="list-group-item">
                     <Link to="/admin">カタログ管理</Link>
@@ -45,14 +44,8 @@ const App = () => {
                 <Route path="/movies">
                   <Movies />
                 </Route>
-                <Route exact path="/by-category/comedy">
-                  <Categories title={"コメディ"} />
-                </Route>
-                <Route exact path="/by-category/drama">
-                  <Categories title={"ドラマ"} />
-                </Route>
-                <Route path="/by-category">
-                  <CategoryPage />
+                <Route exact path="/genres">
+                  <Genres title={"コメディ"} />
                 </Route>
                 <Route path="/admin">
                   <Admin />
