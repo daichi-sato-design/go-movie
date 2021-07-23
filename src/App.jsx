@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Home from "./components/Home";
 import Movies from "./components/Movies";
 import OneMovie from "./components/OneMovie";
+import OneGenre from "./components/OneGenre";
 import Genres from "./components/Genres";
 import Admin from "./components/Admin";
 
@@ -21,18 +22,30 @@ const App = () => {
             <div className="col-md-2">
               <nav>
                 <ul className="list-group">
-                  <li className="list-group-item">
-                    <Link to="/">Home</Link>
-                  </li>
-                  <li className="list-group-item">
-                    <Link to="/movies">映画一覧</Link>
-                  </li>
-                  <li className="list-group-item">
-                    <Link to="/genres">ガテゴリー</Link>
-                  </li>
-                  <li className="list-group-item">
-                    <Link to="/admin">カタログ管理</Link>
-                  </li>
+                  <Link
+                    to="/"
+                    className="list-group-item list-group-item-action"
+                  >
+                    Home
+                  </Link>
+                  <Link
+                    to="/movies"
+                    className="list-group-item list-group-item-action"
+                  >
+                    映画一覧
+                  </Link>
+                  <Link
+                    to="/genres"
+                    className="list-group-item list-group-item-action"
+                  >
+                    ジャンル
+                  </Link>
+                  <Link
+                    to="/admin"
+                    className="list-group-item list-group-item-action"
+                  >
+                    カタログ管理
+                  </Link>
                 </ul>
               </nav>
             </div>
@@ -43,6 +56,9 @@ const App = () => {
                 </Route>
                 <Route path="/movies">
                   <Movies />
+                </Route>
+                <Route path="/genre/:id">
+                  <OneGenre />
                 </Route>
                 <Route exact path="/genres">
                   <Genres title={"コメディ"} />

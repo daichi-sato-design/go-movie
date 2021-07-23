@@ -35,11 +35,15 @@ const Movies = () => {
     return (
       <>
         <h2>映画を探す</h2>
-        <ul className="mt-3">
+        <ul className="list-group mt-3">
           {movies.map((m) => (
-            <li key={m.id}>
-              <Link to={`${path}/${m.id}`}>{m.title}</Link>
-            </li>
+            <Link
+              key={m.id}
+              to={`${path}/${m.id}`}
+              className="list-group-item list-group-item-action"
+            >
+              {m.title}
+            </Link>
           ))}
         </ul>
       </>

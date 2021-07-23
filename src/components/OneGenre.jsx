@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
-const Genres = () => {
-  const [genres, setGenres] = useState([]);
+const OneGenre = () => {
+  const [movies, setMovies] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(null);
 
+  const { id } = useParams();
+
   useEffect(() => {
-    fetch(`http://localhost:4000/v1/genres`)
+    fetch(`http://localhost:4000/v1/movies/${id}`)
       .then((res) => {
         if (res.status !== 200) {
           let err = Error;
@@ -18,13 +20,17 @@ const Genres = () => {
         return res.json();
       })
       .then((json) => {
-        setGenres(json.genres);
+        setMovies(json.movies);
         setIsLoaded(true);
       })
       .catch((_) => {
         setIsLoaded(true);
       });
-  }, []);
+  }, [id]);
+
+  if (!movies) {
+    setMovies([]);
+  }
 
   if (error) {
     return <div>Error: {error}</div>;
@@ -33,16 +39,15 @@ const Genres = () => {
   } else {
     return (
       <>
-        <h2>ジャンル</h2>
-
+        <h2>ジャンル検索</h2>
         <ul className="list-group mt-3">
-          {genres.map((m) => (
+          {movies.map((m) => (
             <Link
               key={m.id}
-              to={`/genre/${m.id}`}
+              to={`/movies/${m.id}`}
               className="list-group-item list-group-item-action"
             >
-              {m.genre_name}
+              {m.title}
             </Link>
           ))}
         </ul>
@@ -51,4 +56,4 @@ const Genres = () => {
   }
 };
 
-export default Genres;
+export default OneGenre;
