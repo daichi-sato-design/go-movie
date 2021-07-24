@@ -13,8 +13,8 @@ const OneGenre = () => {
       .then((res) => {
         if (res.status !== 200) {
           let err = Error;
-          err.message = "Invalid response code: " + res.status;
-          setError(err.message);
+          err.Message = "Invalid response code: " + res.status;
+          setError(err.Message);
           throw err;
         }
         return res.json();

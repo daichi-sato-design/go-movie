@@ -5,14 +5,15 @@ import Home from "./components/Home";
 import Movies from "./components/Movies";
 import OneMovie from "./components/OneMovie";
 import OneGenre from "./components/OneGenre";
-import Genres from "./components/Genres";
+import EditMovie from "./components/EditMovie";
 import Admin from "./components/Admin";
+import Genres from "./components/Genres";
 
 const App = () => {
   return (
     <Router>
       <div className="app">
-        <div className="container mt-4">
+        <div className="container my-4">
           <div className="row">
             <h1 className="mt-4">映画を見に行こう！</h1>
             <hr className="mb-4" />
@@ -41,6 +42,12 @@ const App = () => {
                     ジャンル
                   </Link>
                   <Link
+                    to="/admin/movie/0"
+                    className="list-group-item list-group-item-action"
+                  >
+                    映画の追加
+                  </Link>
+                  <Link
                     to="/admin"
                     className="list-group-item list-group-item-action"
                   >
@@ -60,8 +67,11 @@ const App = () => {
                 <Route path="/genre/:id">
                   <OneGenre />
                 </Route>
-                <Route exact path="/genres">
-                  <Genres title={"コメディ"} />
+                <Route path="/genres">
+                  <Genres />
+                </Route>
+                <Route path="/admin/movie/:id">
+                  <EditMovie />
                 </Route>
                 <Route path="/admin">
                   <Admin />
