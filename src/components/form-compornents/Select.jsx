@@ -1,4 +1,14 @@
-const Select = ({ title, name, value, placeholder, options, handleChange }) => {
+const Select = ({
+  title,
+  name,
+  value,
+  placeholder,
+  options,
+  handleChange,
+  className,
+  errorDiv,
+  errorMsg,
+}) => {
   return (
     <div className="mb-3">
       <label htmlFor={name} className="form-label">
@@ -6,7 +16,7 @@ const Select = ({ title, name, value, placeholder, options, handleChange }) => {
         {title}{" "}
       </label>
       <select
-        className="form-select"
+        className={`form-select ${className}`}
         name={name}
         id={name}
         value={value}
@@ -26,6 +36,7 @@ const Select = ({ title, name, value, placeholder, options, handleChange }) => {
           );
         })}
       </select>
+      <div className={errorDiv}>{errorMsg}</div>
     </div>
   );
 };

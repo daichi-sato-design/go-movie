@@ -6,10 +6,19 @@ import TextArea from "./form-compornents/TextArea";
 import Select from "./form-compornents/Select";
 
 const EditMovie = () => {
-  const [movie, setMovie] = useState({});
+  const [movie, setMovie] = useState({
+    id: 0,
+    title: "",
+    release_date: "",
+    runtime: "",
+    mpaa_rating: "",
+    rating: "",
+    description: "",
+  });
   const [mpaaOptions, setMpaaOptions] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(null);
+  const [errors, setErrors] = useState([]);
 
   const { id } = useParams();
 
@@ -49,15 +58,52 @@ const EditMovie = () => {
     setMpaaOptions([
       { id: "G", value: "G" },
       { id: "PG", value: "PG" },
-      { id: "PG14", value: "PG14" },
+      { id: "PG13", value: "PG13" },
       { id: "R", value: "R" },
       { id: "NC17", value: "NC17" },
     ]);
   }, [id]);
 
   const handleSubmit = (evt) => {
-    console.log("Form was submitted");
     evt.preventDefault();
+
+    // Clientフォームのバリデーション
+    let errors = [];
+    if (movie.title === "") {
+      errors.push("title");
+    }
+    if (movie.release_date === "") {
+      errors.push("release_date");
+    }
+    if (movie.runtime === "") {
+      errors.push("runtime");
+    }
+    if (movie.release_date === "") {
+      errors.push("mpaa_rating");
+    }
+    if (movie.rating === "") {
+      errors.push("rating");
+    }
+    if (movie.description === "") {
+      errors.push("description");
+    }
+    setErrors(errors);
+    if (errors.length > 0) {
+      return false;
+    }
+
+    const data = new FormData(evt.target);
+    const payload = Object.fromEntries(data.entries());
+    console.log(payload);
+    const requestOptions = {
+      method: "POST",
+      body: JSON.stringify(payload),
+    };
+    fetch("http://localhost:4000/v1/admin/editmovie", requestOptions)
+      .then((res) => res.json())
+      .then((json) => {
+        console.log(json);
+      });
   };
 
   const handleChange = (evt) => {
@@ -67,6 +113,10 @@ const EditMovie = () => {
       ...movie,
       [name]: value,
     });
+  };
+
+  const hasError = (key) => {
+    return errors.indexOf(key) !== -1;
   };
 
   if (error) {
@@ -94,6 +144,9 @@ const EditMovie = () => {
             name={"title"}
             value={movie.title}
             handleChange={handleChange}
+            className={hasError("title") ? "is-invalid" : ""}
+            errorDiv={hasError("title") ? "text-danger" : "d-none"}
+            errorMsg={"※ タイトルを入力してください。"}
           />
 
           <Input
@@ -102,6 +155,9 @@ const EditMovie = () => {
             name={"release_date"}
             value={movie.release_date}
             handleChange={handleChange}
+            className={hasError("release_date") ? "is-invalid" : ""}
+            errorDiv={hasError("release_date") ? "text-danger" : "d-none"}
+            errorMsg={"※ 上映日を入力してください。"}
           />
 
           <Input
@@ -110,6 +166,9 @@ const EditMovie = () => {
             name={"runtime"}
             value={movie.runtime}
             handleChange={handleChange}
+            className={hasError("runtime") ? "is-invalid" : ""}
+            errorDiv={hasError("runtime") ? "text-danger" : "d-none"}
+            errorMsg={"※ 上映時間を入力してください。"}
           />
 
           <Select
@@ -119,6 +178,9 @@ const EditMovie = () => {
             placeholder={"Choose..."}
             options={mpaaOptions}
             handleChange={handleChange}
+            className={hasError("mpaa_rating") ? "is-invalid" : ""}
+            errorDiv={hasError("mpaa_rating") ? "text-danger" : "d-none"}
+            errorMsg={"※ MPAAレーティングを選択してください。"}
           />
 
           <Input
@@ -127,6 +189,9 @@ const EditMovie = () => {
             name={"rating"}
             value={movie.rating}
             handleChange={handleChange}
+            className={hasError("rating") ? "is-invalid" : ""}
+            errorDiv={hasError("rating") ? "text-danger" : "d-none"}
+            errorMsg={"※ レーティングを入力してください。"}
           />
 
           <TextArea
@@ -135,6 +200,9 @@ const EditMovie = () => {
             value={movie.description}
             row={3}
             handleChange={handleChange}
+            className={hasError("description") ? "is-invalid" : ""}
+            errorDiv={hasError("description") ? "text-danger" : "d-none"}
+            errorMsg={"※ 詳細を入力してください。"}
           />
 
           <hr />
