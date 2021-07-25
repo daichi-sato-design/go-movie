@@ -4,6 +4,7 @@ import "./EditMovie.css";
 import Input from "./form-compornents/Input";
 import TextArea from "./form-compornents/TextArea";
 import Select from "./form-compornents/Select";
+import Alert from "./ui-components/Alert";
 
 const EditMovie = () => {
   const [movie, setMovie] = useState({
@@ -19,6 +20,10 @@ const EditMovie = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(null);
   const [errors, setErrors] = useState([]);
+  const [alert, setAlert] = useState({
+    type: "d-none",
+    message: "",
+  });
 
   const { id } = useParams();
 
@@ -101,8 +106,18 @@ const EditMovie = () => {
     };
     fetch("http://localhost:4000/v1/admin/editmovie", requestOptions)
       .then((res) => res.json())
-      .then((json) => {
-        console.log(json);
+      .then((data) => {
+        if (data.error) {
+          setAlert({
+            type: "alert-danger",
+            message: data.error.message,
+          });
+        } else {
+          setAlert({
+            type: "alert-success",
+            message: "Changes saved!",
+          });
+        }
       });
   };
 
@@ -127,7 +142,7 @@ const EditMovie = () => {
     return (
       <>
         <h2>映画の追加</h2>
-
+        <Alert alertType={alert.type} alertMessage={alert.message} />
         <hr />
         <form method="post" onSubmit={handleSubmit}>
           <input
@@ -211,10 +226,6 @@ const EditMovie = () => {
             保存
           </button>
         </form>
-
-        <div className="mt-4">
-          <pre>{JSON.stringify(movie, 0, 3)}</pre>
-        </div>
       </>
     );
   }
