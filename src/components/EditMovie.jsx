@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import "./EditMovie.css";
 import Input from "./form-compornents/Input";
 import TextArea from "./form-compornents/TextArea";
@@ -130,6 +130,10 @@ const EditMovie = () => {
     });
   };
 
+  const confirmDelete = (e) => {
+    console.log("would delete movie id", movie.id);
+  };
+
   const hasError = (key) => {
     return errors.indexOf(key) !== -1;
   };
@@ -225,6 +229,18 @@ const EditMovie = () => {
           <button type="submit" className="btn btn-primary">
             保存
           </button>
+          <Link to="/admin" className="btn btn-warning ms-1">
+            キャンセル
+          </Link>
+          {movie.id > 0 && (
+            <a
+              href="#!"
+              onClick={() => confirmDelete()}
+              className="btn btn-danger ms-1"
+            >
+              削除
+            </a>
+          )}
         </form>
       </>
     );
