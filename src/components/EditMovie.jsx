@@ -131,7 +131,7 @@ const EditMovie = () => {
   };
 
   const confirmDelete = (e) => {
-    console.log("would delete movie id", movie.id);
+    console.log("IDが一致する映画を削除します", movie.id);
   };
 
   const hasError = (key) => {
