@@ -39,7 +39,7 @@ const Genres = () => {
           {genres.map((m) => (
             <Link
               key={m.id}
-              to={`/genre/${m.id}`}
+              to={{ pathname: `/genre/${m.id}`, genreName: m.genre_name }}
               className="list-group-item list-group-item-action"
             >
               {m.genre_name}

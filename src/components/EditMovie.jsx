@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, withRouter } from "react-router-dom";
 import "./EditMovie.css";
 import Input from "./form-compornents/Input";
 import TextArea from "./form-compornents/TextArea";
 import Select from "./form-compornents/Select";
 import Alert from "./ui-components/Alert";
+import { confirmAlert } from "react-confirm-alert"; // Import
+import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 
-const EditMovie = () => {
+const EditMovie = withRouter((props) => {
   const [movie, setMovie] = useState({
     id: 0,
     title: "",
@@ -20,7 +22,7 @@ const EditMovie = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(null);
   const [errors, setErrors] = useState([]);
-  const [alert, setAlert] = useState({
+  const [formAlert, setFormAlert] = useState({
     type: "d-none",
     message: "",
   });
@@ -108,12 +110,12 @@ const EditMovie = () => {
       .then((res) => res.json())
       .then((data) => {
         if (data.error) {
-          setAlert({
+          setFormAlert({
             type: "alert-danger",
             message: data.error.message,
           });
         } else {
-          setAlert({
+          setFormAlert({
             type: "alert-success",
             message: "Changes saved!",
           });
@@ -130,8 +132,36 @@ const EditMovie = () => {
     });
   };
 
-  const confirmDelete = (e) => {
-    console.log("IDが一致する映画を削除します", movie.id);
+  const confirmDelete = () => {
+    confirmAlert({
+      title: "Delete movie?",
+      message: "Are you sure to do this.",
+      buttons: [
+        {
+          label: "はい",
+          onClick: () => {
+            fetch(`http://localhost:4000/v1/admin/deletemovie/${id}`, {
+              method: "GET",
+            })
+              .then((res) => res.json())
+              .then((data) => {
+                if (data.error) {
+                  setFormAlert({
+                    type: "alert-danger",
+                    message: data.error.message,
+                  });
+                } else {
+                  props.history.push("/admin");
+                }
+              });
+          },
+        },
+        {
+          label: "キャンセル",
+          onClick: () => alert("Click No"),
+        },
+      ],
+    });
   };
 
   const hasError = (key) => {
@@ -146,7 +176,7 @@ const EditMovie = () => {
     return (
       <>
         <h2>映画の追加</h2>
-        <Alert alertType={alert.type} alertMessage={alert.message} />
+        <Alert alertType={formAlert.type} alertMessage={formAlert.message} />
         <hr />
         <form method="post" onSubmit={handleSubmit}>
           <input
@@ -245,6 +275,6 @@ const EditMovie = () => {
       </>
     );
   }
-};
+});
 
 export default EditMovie;

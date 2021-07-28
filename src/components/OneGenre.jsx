@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, withRouter } from "react-router-dom";
 
-const OneGenre = () => {
+const OneGenre = withRouter((props) => {
   const [movies, setMovies] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(null);
@@ -39,7 +39,7 @@ const OneGenre = () => {
   } else {
     return (
       <>
-        <h2>ジャンル検索</h2>
+        <h2>ジャンル: {props.location.genreName}</h2>
         <ul className="list-group mt-3">
           {movies.map((m) => (
             <Link
@@ -54,6 +54,6 @@ const OneGenre = () => {
       </>
     );
   }
-};
+});
 
 export default OneGenre;
