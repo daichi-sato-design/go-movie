@@ -34,7 +34,7 @@ const Movies = () => {
   } else {
     return (
       <>
-        <h2>映画検索</h2>
+        <h2>映画一覧</h2>
         <ul className="list-group mt-3">
           {movies.map((m) => (
             <Link
