@@ -18,7 +18,6 @@ const EditMovie = withRouter((props) => {
     rating: "",
     description: "",
   });
-  const [mpaaOptions, setMpaaOptions] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(null);
   const [errors, setErrors] = useState([]);
@@ -61,15 +60,15 @@ const EditMovie = withRouter((props) => {
       // パラメータidが0のとき
       setIsLoaded(true);
     }
-
-    setMpaaOptions([
-      { id: "G", value: "G" },
-      { id: "PG", value: "PG" },
-      { id: "PG13", value: "PG13" },
-      { id: "R", value: "R" },
-      { id: "NC17", value: "NC17" },
-    ]);
   }, [id]);
+
+  const mpaaOptions = [
+    { id: "G", value: "G" },
+    { id: "PG", value: "PG" },
+    { id: "PG13", value: "PG13" },
+    { id: "R", value: "R" },
+    { id: "NC17", value: "NC17" },
+  ];
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
@@ -101,7 +100,7 @@ const EditMovie = withRouter((props) => {
 
     const data = new FormData(evt.target);
     const payload = Object.fromEntries(data.entries());
-    console.log(payload);
+
     const requestOptions = {
       method: "POST",
       body: JSON.stringify(payload),
@@ -178,7 +177,7 @@ const EditMovie = withRouter((props) => {
         <h2>映画の追加</h2>
         <Alert alertType={formAlert.type} alertMessage={formAlert.message} />
         <hr />
-        <form method="post" onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
           <input
             type="hidden"
             name="id"
