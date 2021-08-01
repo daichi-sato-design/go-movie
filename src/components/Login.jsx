@@ -63,6 +63,10 @@ const Login = withRouter((props) => {
           });
         } else {
           handleJWTChange(Object.values(data)[0]);
+          window.localStorage.setItem(
+            "access-token",
+            JSON.stringify(Object.values(data)[0])
+          );
           props.history.push("/");
         }
       });

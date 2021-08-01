@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 import Home from "./components/Home";
@@ -13,8 +13,18 @@ import Login from "./components/Login";
 const App = () => {
   const [jwt, setJWT] = useState("");
 
+  useEffect(() => {
+    let t = window.localStorage.getItem("access-token");
+    if (t) {
+      if (jwt === "") {
+        setJWT(t);
+      }
+    }
+  }, [jwt]);
+
   const logout = () => {
     setJWT("");
+    window.localStorage.removeItem("access-token");
   };
 
   let loginLink;
