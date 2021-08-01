@@ -1,13 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { useRouteMatch, Link } from "react-router-dom";
+import { useRouteMatch, Link, withRouter } from "react-router-dom";
 
-const Admin = () => {
+const Admin = withRouter((props) => {
   const [movies, setMovies] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(null);
   const { path } = useRouteMatch();
 
   useEffect(() => {
+    // ユーザー認証
+    if (props.jwt === "") {
+      props.history.push({
+        pathname: "/login",
+      });
+      return;
+    }
+    // DBから映画一覧の取得
     fetch("http://localhost:4000/v1/movies")
       .then((res) => {
         if (res.status !== 200) {
@@ -25,7 +33,7 @@ const Admin = () => {
       .catch((_) => {
         setIsLoaded(true);
       });
-  }, []);
+  }, [props.history, props.jwt]);
 
   if (error) {
     return <div>Error: {error}</div>;
@@ -49,6 +57,6 @@ const Admin = () => {
       </>
     );
   }
-};
+});
 
 export default Admin;

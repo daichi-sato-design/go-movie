@@ -29,6 +29,14 @@ const EditMovie = withRouter((props) => {
   const { id } = useParams();
 
   useEffect(() => {
+    // ユーザー認証
+    if (props.jwt === "") {
+      props.history.push({
+        pathname: "/login",
+      });
+      return;
+    }
+    // urlのidパラメータで映画の「追加・編集」切り替え
     if (id > 0) {
       fetch(`http://localhost:4000/v1/movie/${id}`)
         .then((res) => {
@@ -60,7 +68,7 @@ const EditMovie = withRouter((props) => {
       // パラメータidが0のとき
       setIsLoaded(true);
     }
-  }, [id]);
+  }, [id, props.history, props.jwt]);
 
   const mpaaOptions = [
     { id: "G", value: "G" },
@@ -98,7 +106,7 @@ const EditMovie = withRouter((props) => {
       return false;
     }
 
-    // we passed, so post info
+    // バリデーション通過後
     const data = new FormData(evt.target);
     const payload = Object.fromEntries(data.entries());
     const myHeader = new Headers();

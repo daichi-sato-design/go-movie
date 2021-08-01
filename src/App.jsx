@@ -87,15 +87,20 @@ const App = () => {
             </div>
             <div className="col-md-10">
               <Switch>
+                <Route exact path="/" component={() => <Home />} />
+                <Route exact path="/movies" component={() => <Movies />} />
                 <Route path="/movies/:id" component={() => <OneMovie />} />
-                <Route path="/movies" component={() => <Movies />} />
-                <Route path="/genre/:id" component={() => <OneGenre />} />
                 <Route path="/genres" component={() => <Genres />} />
+                <Route path="/genre/:id" component={() => <OneGenre />} />
+                <Route
+                  exact
+                  path="/admin"
+                  component={(props) => <Admin {...props} jwt={jwt} />}
+                />
                 <Route
                   path="/admin/movie/:id"
                   component={(props) => <EditMovie {...props} jwt={jwt} />}
                 />
-                <Route path="/admin" component={() => <Admin />} />
                 <Route
                   exact
                   path="/login"
@@ -103,7 +108,6 @@ const App = () => {
                     <Login {...props} handleJWTChange={handleJWTChange} />
                   )}
                 />
-                <Route path="/" component={() => <Home />} />
               </Switch>
             </div>
           </div>
