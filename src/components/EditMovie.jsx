@@ -118,6 +118,7 @@ const EditMovie = withRouter((props) => {
       headers: myHeader,
       body: JSON.stringify(payload),
     };
+
     fetch("http://localhost:4000/v1/admin/editmovie", requestOptions)
       .then((res) => res.json())
       .then((data) => {
@@ -145,6 +146,14 @@ const EditMovie = withRouter((props) => {
   };
 
   const confirmDelete = () => {
+    const myHeader = new Headers();
+    myHeader.append("Content-Type", "application/json");
+    myHeader.append("Authorization", `Bearer ${props.jwt}`);
+
+    const requestOptions = {
+      method: "GET",
+      headers: myHeader,
+    };
     confirmAlert({
       title: "Delete movie?",
       message: "Are you sure to do this.",
@@ -152,9 +161,10 @@ const EditMovie = withRouter((props) => {
         {
           label: "はい",
           onClick: () => {
-            fetch(`http://localhost:4000/v1/admin/deletemovie/${id}`, {
-              method: "GET",
-            })
+            fetch(
+              `http://localhost:4000/v1/admin/deletemovie/${id}`,
+              requestOptions
+            )
               .then((res) => res.json())
               .then((data) => {
                 if (data.error) {
