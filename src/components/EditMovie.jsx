@@ -98,11 +98,16 @@ const EditMovie = withRouter((props) => {
       return false;
     }
 
+    // we passed, so post info
     const data = new FormData(evt.target);
     const payload = Object.fromEntries(data.entries());
+    const myHeader = new Headers();
+    myHeader.append("Content-Type", "application/json");
+    myHeader.append("Authorization", `Bearer ${props.jwt}`);
 
     const requestOptions = {
       method: "POST",
+      headers: myHeader,
       body: JSON.stringify(payload),
     };
     fetch("http://localhost:4000/v1/admin/editmovie", requestOptions)

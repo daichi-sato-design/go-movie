@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { withRouter } from "react-router-dom";
+
 import Input from "./form-compornents/Input";
 import Alert from "./ui-components/Alert";
 
-const Login = () => {
+const Login = withRouter((props) => {
   const [state, setState] = useState({
     email: "",
     password: "",
@@ -60,13 +62,14 @@ const Login = () => {
             message: data.error.message,
           });
         } else {
-          console.log(data);
-          setFormAlert({
-            type: "alert-success",
-            message: "Success!",
-          });
+          handleJWTChange(Object.values(data)[0]);
+          props.history.push("/");
         }
       });
+  };
+
+  const handleJWTChange = (jwt) => {
+    props.handleJWTChange(jwt);
   };
 
   return (
@@ -102,6 +105,6 @@ const Login = () => {
       </form>
     </>
   );
-};
+});
 
 export default Login;

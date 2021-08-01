@@ -28,7 +28,9 @@ const App = () => {
     );
   }
 
-  const handleJWTChange = () => {};
+  const handleJWTChange = (jwt) => {
+    setJWT(jwt);
+  };
 
   return (
     <Router>
@@ -91,13 +93,15 @@ const App = () => {
                 <Route path="/genres" component={() => <Genres />} />
                 <Route
                   path="/admin/movie/:id"
-                  component={() => <EditMovie />}
+                  component={(props) => <EditMovie {...props} jwt={jwt} />}
                 />
                 <Route path="/admin" component={() => <Admin />} />
                 <Route
                   exact
                   path="/login"
-                  component={() => <Login handleJWTChange={handleJWTChange} />}
+                  component={(props) => (
+                    <Login {...props} handleJWTChange={handleJWTChange} />
+                  )}
                 />
                 <Route path="/" component={() => <Home />} />
               </Switch>
