@@ -25,6 +25,12 @@ const OneMovie = () => {
       .catch((_) => {
         setIsLoaded(true);
       });
+    // clean up function
+    return () => {
+      setMovie({});
+      setError(null);
+      setIsLoaded(false);
+    };
   }, [id]);
 
   if (movie.genres) {
