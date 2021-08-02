@@ -9,6 +9,7 @@ import EditMovie from "./components/EditMovie";
 import Admin from "./components/Admin";
 import Genres from "./components/Genres";
 import Login from "./components/Login";
+import GraphQL from "./components/GraphQL";
 
 const App = () => {
   const [jwt, setJWT] = useState("");
@@ -92,6 +93,12 @@ const App = () => {
                       </Link>
                     </>
                   )}
+                  <Link
+                    to="/graphql"
+                    className="list-group-item list-group-item-action"
+                  >
+                    GraphQL
+                  </Link>
                 </ul>
               </nav>
             </div>
@@ -107,6 +114,11 @@ const App = () => {
                   path="/admin"
                   component={(props) => <Admin {...props} jwt={jwt} />}
                 />
+
+                <Route exact path="/graphql">
+                  <GraphQL />
+                </Route>
+
                 <Route
                   path="/admin/movie/:id"
                   component={(props) => <EditMovie {...props} jwt={jwt} />}
