@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import Input from "./form-compornents/Input";
 
 const GraphQL = () => {
   const [movies, setMovies] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(null);
-  const [searchTerm, setSearchTerm] = useState({
-    search: "",
-  });
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const payload = `
@@ -55,16 +54,48 @@ const GraphQL = () => {
   }, []);
 
   const handleChange = (evt) => {
-    let value = evt.target.value;
-    let name = evt.target.name;
-    setSearchTerm({
-      ...searchTerm,
-      [name]: value,
-    });
+    const newSearchTerm = evt.target.value;
+    setSearchTerm(newSearchTerm);
+    perfromSearch(newSearchTerm);
   };
 
-  const handleSubmit = (evt) => {
-    evt.preventDefault();
+  const perfromSearch = (newSearchTerm) => {
+    const payload = `
+        {
+            search(titleContains: "${newSearchTerm}") {
+                id
+                title
+                runtime
+                year
+                description
+            }
+        }
+        `;
+
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    const requestOptions = {
+      method: "POST",
+      body: payload,
+      Headers: myHeaders,
+    };
+
+    fetch("http://localhost:4000/v1/graphql", requestOptions)
+      .then((res) => {
+        return res.json();
+      })
+      .then((json) => {
+        let theList = Object.values(json.data.search);
+        return theList;
+      })
+      .then((theList) => {
+        if (theList.length > 0) {
+          setMovies(theList);
+        } else {
+          setMovies([]);
+        }
+      });
   };
 
   if (error) {
@@ -77,22 +108,20 @@ const GraphQL = () => {
         <h2>GraphQL</h2>
         <hr />
 
-        <form onSubmit={handleSubmit}>
-          <Input
-            title={"Search"}
-            type={"text"}
-            name={"search"}
-            value={searchTerm.search}
-            handleChange={handleChange}
-          ></Input>
-        </form>
+        <Input
+          title={"Search"}
+          type={"text"}
+          name={"search"}
+          value={searchTerm}
+          handleChange={handleChange}
+        ></Input>
 
         <div className="list-group">
           {movies.map((m, _) => (
-            <a
+            <Link
               key={m.id}
               className="list-group-item list-group-item-action"
-              href="#!"
+              to={`/movies/${m.id}`}
             >
               <strong>{m.title}</strong>
               <br />
@@ -101,7 +130,7 @@ const GraphQL = () => {
               </small>
               <br />
               {m.description.slice(0, 100)}...
-            </a>
+            </Link>
           ))}
         </div>
       </>
