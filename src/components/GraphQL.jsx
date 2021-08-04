@@ -121,7 +121,7 @@ const GraphQL = () => {
             <Link
               key={m.id}
               className="list-group-item list-group-item-action"
-              to={`/movies/${m.id}`}
+              to={`/moviesgraphql/${m.id}`}
             >
               <strong>{m.title}</strong>
               <br />

@@ -10,6 +10,7 @@ import Admin from "./components/Admin";
 import Genres from "./components/Genres";
 import Login from "./components/Login";
 import GraphQL from "./components/GraphQL";
+import OneMovieGraphQL from "./components/OneMovieGraphQL";
 
 const App = () => {
   const [jwt, setJWT] = useState("");
@@ -107,6 +108,10 @@ const App = () => {
                 <Route exact path="/" component={() => <Home />} />
                 <Route exact path="/movies" component={() => <Movies />} />
                 <Route path="/movies/:id" component={() => <OneMovie />} />
+                <Route
+                  path="/moviesgraphql/:id"
+                  component={() => <OneMovieGraphQL />}
+                />
                 <Route path="/genres" component={() => <Genres />} />
                 <Route path="/genre/:id" component={() => <OneGenre />} />
                 <Route
